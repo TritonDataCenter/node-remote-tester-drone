@@ -32,11 +32,11 @@ if (process.platform === 'win32') {
 
   exports.buildCmd = 'make'
   var cpus = require('os').cpus()
-  var jobs = cpus && cpus.length || 4
+  var jobs = cpus && cpus.length || 2
   exports.buildArgs = ['-j' + jobs]
 
   exports.cleanCmd = 'make'
-  exports.cleanArgs = ['distclean']
+  exports.cleanArgs = ['clean']
 
   exports.testCmd = 'make'
   exports.testArgs = ['test-all']

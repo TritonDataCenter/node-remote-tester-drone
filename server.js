@@ -1,3 +1,15 @@
+// TODO:
+//
+// 1. we should be able to use this for libuv as well.
+//
+// 2. it'd be nice to skip the clean step sometimes, or
+// maybe only run it if a build fails or something.  It's
+// a bit slow otherwise.
+//
+// 3. It'd be good if it removed the checkout folder
+// when the git actions fail, but removing the whole
+// checkout on test failure is too extreme.
+
 var http = require('http')
 var https = require('https')
 var spawn = require('child_process').spawn
