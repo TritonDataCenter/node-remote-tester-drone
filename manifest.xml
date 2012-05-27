@@ -19,6 +19,7 @@
       <method_credential user="node" group="node" privileges='basic,net_privaddr' />
       <method_environment>
         <envvar name="HOME" value="/home/node" />
+        <envvar name="PATH" value="/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin" />
       </method_environment>
     </method_context>
     <exec_method type="method" name="start"
