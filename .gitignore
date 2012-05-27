@@ -1,0 +1,5 @@
+repos/*
+!repos/.do-not-delete
+checkout/*
+!checkout/.do-not-delete
+ssl
