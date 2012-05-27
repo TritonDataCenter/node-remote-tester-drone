@@ -1,0 +1,10 @@
+{
+  "name": "node-remote-tester-drone",
+  "description": "The worker bee of the node remote tester hive",
+  "version": "0.0.0",
+  "dependencies": {
+    "pushover": "~0.1.2",
+    "mkdirp": "~0.3.2",
+    "rimraf": "~2.0.1"
+  }
+}
