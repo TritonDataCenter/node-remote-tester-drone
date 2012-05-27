@@ -6,6 +6,12 @@ exports.https = {
   cert: fs.readFileSync(__dirname + '/ssl/server.crt')
 }
 
+try {
+  exports.secret = fs.readFileSync(__dirname + '/secret.txt', 'utf8').trim()
+} catch (e) {
+  exports.secret = null
+}
+
 if (process.platform === 'win32') {
   exports.gitCmd = 'git'
 

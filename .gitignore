@@ -3,3 +3,4 @@ repos/*
 checkout/*
 !checkout/.do-not-delete
 ssl
+secret.txt

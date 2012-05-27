@@ -36,8 +36,25 @@ var buildCmd = config.buildCmd
 var buildArgs = config.buildArgs
 var httpsOpt = config.https
 var port = config.port
+var secret = config.secret
 
 https.createServer(httpsOpt, function (req, res) {
+  // if we have a shared secret, then only accept requests with that
+  if (secret) {
+    var auth = req.headers.authorization
+    if (!auth) {
+      res.statusCode = 401
+      res.setHeader('WWW-Authenticate', 'Basic realm="node tester drone"')
+      return res.end('auth required')
+    }
+    auth = new Buffer(auth.replace(/^Basic /, ''), 'base64').toString()
+    auth = (auth === 'node:' + secret)
+    if (!auth) {
+      res.statusCode = 403
+      return res.end('unauthorized')
+    }
+  }
+
   if (req.method === 'POST' && req.url === '/test') {
     return runTests(req, res)
   }
