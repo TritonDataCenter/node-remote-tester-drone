@@ -127,26 +127,30 @@ function build (res) {
 }
 
 function makeTest (res) {
-  pipeSpawn(testCmd, testArgs, {cwd: nodeCheckout},
-            res, function () { res.end('\n\nOK\n'); testsRunning = false })
+  pipeSpawn(testCmd, testArgs, {cwd: nodeCheckout}, res, function () {
+    res.end('\nOK\n')
+    process.stdout.write('\nOK\n')
+    testsRunning = false
+  })
 }
 
 function pipeSpawn (cmd, args, opt, res, cb) {
   var title = cmd + ' ' + args.map(JSON.stringify).join(' ')
-  console.log(title)
+  console.log('> ' + title)
   res.write('> ' + title + '\n')
 
   var child = spawn(cmd, args, opt)
-  child.stdout.on('data', function (c) {
-    res.write(c)
-  })
-  child.stderr.on('data', function (c) {
-    res.write(c)
-  })
-  child.on('close', function (code) {
+  child.stdout.pipe(res, { end: false })
+  child.stderr.pipe(res, { end: false })
+
+  var ev = 'close'
+  if (process.version.match(/^v0\.[0-6]\./)) ev = 'exit'
+  child.on(ev, function (code) {
     if (code) {
-      res.end('ERROR: ' + title +
-              ' failed with code ' + code + '\n')
+      var er = 'ERROR: ' + title +
+               ' failed with code ' + code + '\n'
+      process.stderr.write(er)
+      res.end(er)
       testsRunning = false
       return
     }
