@@ -4,3 +4,4 @@ checkout/*
 !checkout/.do-not-delete
 ssl
 secret.txt
+drone.log
