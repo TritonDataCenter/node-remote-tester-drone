@@ -9,6 +9,12 @@
 // 3. It'd be good if it removed the checkout folder
 // when the git actions fail, but removing the whole
 // checkout on test failure is too extreme.
+//
+// 4. Have a way for the drone to register itself with the
+// hub.
+//
+// 5. Dry it up.  Maybe each command should be tied to a
+// specific path or something.
 
 var http = require('http')
 var https = require('https')
@@ -102,20 +108,24 @@ function fetch (co, res) {
 }
 
 function checkout (co, res) {
-  pipeSpawn(gitCmd, ['checkout', co], {cwd: nodeCheckout},
-            res, function () { clean(res) })
+  pipeSpawn(gitCmd, ['checkout', co], {cwd: nodeCheckout}, res, function () {
+    // TODO: only clean when requested
+    // clean(res)
+
+    return configure(res)
+  })
 }
 
 function clean (res) {
   pipeSpawn(gitCmd, ['clean', '-fd'], {cwd: nodeCheckout}, res, function () {
     pipeSpawn(cleanCmd, cleanArgs, {cwd: nodeCheckout}, res, function () {
-      if (configCmd) configure(res)
-      else build(res)
+      configure(res)
     })
   })
 }
 
 function configure (res) {
+  if (!configCmd) return build(res)
   var cmd = path.resolve(nodeCheckout, configCmd)
   pipeSpawn(cmd, configArgs, {cwd: nodeCheckout},
             res, function () { build(res) })
