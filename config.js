@@ -28,7 +28,7 @@ if (process.platform === 'win32') {
   exports.cleanArgs = ['clean']
 
   exports.testCmd = 'vcbuild.bat'
-  exports.testArgs = ['test-all']
+  exports.testArgs = ['test']
 
 } else {
   exports.gitCmd = 'git'
